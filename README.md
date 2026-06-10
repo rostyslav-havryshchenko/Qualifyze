@@ -5,7 +5,6 @@
   <img src=".images/video-call.png" alt="qualifyze live coding challenge" width="80" height="80">
 </p>
 
-
 <h1 align="center">
   <b>
     Qualifyze Frontend Live Coding Challenge
