@@ -26,7 +26,15 @@ type OmdbResponse = OmdbSuccessResponse | OmdbErrorResponse
  */
 export async function searchFilms(query: string, signal?: AbortSignal) {
   const params = new URLSearchParams({ apikey: OMDB_API_KEY, s: query })
-  const res = await fetch(`${OMDB_BASE_URL}/?${params}`, { signal })
+
+  let res: Response
+  try {
+    res = await fetch(`${OMDB_BASE_URL}/?${params}`, { signal })
+  } catch (err) {
+    // Re-throw AbortError so TanStack Query can handle cancellation silently
+    if (err instanceof DOMException && err.name === 'AbortError') throw err
+    throw new Error('Something went wrong.', { cause: err })
+  }
 
   if (!res.ok) throw new Error('Something went wrong.')
   const data: OmdbResponse = await res.json()
